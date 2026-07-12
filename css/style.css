@@ -1,0 +1,354 @@
+/* ======================================================
+   ANIMASI MODERN — v2
+   Link di HTML: <link rel="stylesheet" href="style.css">
+   ====================================================== */
+
+:root {
+    --anim-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --anim-ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --clr-sukses: #10b981;
+    --clr-error: #ef4444;
+    --clr-info: #3b82f6;
+    --clr-warning: #f59e0b;
+}
+
+/* ------------------------------------------------------
+   1. BARIS TABEL — muncul dgn scale + blur reveal
+   ------------------------------------------------------ */
+@keyframes rowReveal {
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+        filter: blur(3px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+#tabelDokumen tr {
+    animation: rowReveal 0.45s var(--anim-ease) forwards;
+    opacity: 0;
+}
+
+#tabelDokumen tr:hover {
+    background: rgba(59, 130, 246, 0.06);
+    transition: background 0.2s ease;
+}
+
+@keyframes rowKeluar {
+    from {
+        opacity: 1;
+        max-height: 60px;
+        transform: translateX(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(50px) scale(0.9);
+    }
+}
+
+#tabelDokumen tr.row-hapus {
+    animation: rowKeluar 0.35s var(--anim-ease) forwards;
+    pointer-events: none;
+}
+
+/* ------------------------------------------------------
+   2. SKELETON LOADING (shimmer) — ganti spinner polos
+   ------------------------------------------------------ */
+.skeleton-row td {
+    padding: 10px 12px;
+}
+
+.skeleton-bar {
+    height: 14px;
+    border-radius: 6px;
+    background: linear-gradient(
+        90deg,
+        rgba(0, 0, 0, 0.06) 25%,
+        rgba(0, 0, 0, 0.12) 37%,
+        rgba(0, 0, 0, 0.06) 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.3s ease infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ------------------------------------------------------
+   3. TOMBOL — ripple effect + hover lembut
+   ------------------------------------------------------ */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.18s var(--anim-ease), box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.96);
+}
+
+.btn-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(0);
+    animation: rippleAnim 0.55s ease-out forwards;
+    pointer-events: none;
+}
+
+@keyframes rippleAnim {
+    to {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+/* ------------------------------------------------------
+   4. TOAST — ikon, progress bar, slide + bounce
+   ------------------------------------------------------ */
+#toastContainer {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast-item {
+    position: relative;
+    min-width: 260px;
+    max-width: 340px;
+    padding: 14px 16px 16px 46px;
+    border-radius: 12px;
+    background: #1f2937;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    border-left: 4px solid var(--clr-info);
+    animation: toastMasuk 0.4s var(--anim-ease-bounce) forwards;
+}
+
+.toast-item.toast-keluar {
+    animation: toastKeluar 0.3s ease forwards;
+}
+
+.toast-item::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.15;
+}
+
+.toast-item::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 100%;
+    background: currentColor;
+    opacity: 0.5;
+    transform-origin: left;
+    animation: toastProgress 2.5s linear forwards;
+}
+
+@keyframes toastProgress {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+
+.toast-sukses { border-left-color: var(--clr-sukses); color: var(--clr-sukses); }
+.toast-error  { border-left-color: var(--clr-error);  color: var(--clr-error); }
+.toast-info   { border-left-color: var(--clr-info);   color: var(--clr-info); }
+
+.toast-item span.toast-teks {
+    color: #f3f4f6;
+}
+
+@keyframes toastMasuk {
+    from {
+        opacity: 0;
+        transform: translateX(70px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@keyframes toastKeluar {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+        max-height: 100px;
+    }
+    to {
+        opacity: 0;
+        transform: translateX(70px);
+        max-height: 0;
+        margin: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+/* ------------------------------------------------------
+   5. MODAL KONFIRMASI CUSTOM (pengganti confirm() bawaan)
+   ------------------------------------------------------ */
+#modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    animation: overlayMasuk 0.25s ease forwards;
+}
+
+#modalOverlay.modal-keluar {
+    animation: overlayKeluar 0.2s ease forwards;
+}
+
+@keyframes overlayMasuk {
+    to { opacity: 1; }
+}
+
+@keyframes overlayKeluar {
+    to { opacity: 0; }
+}
+
+.modal-box {
+    background: #fff;
+    border-radius: 16px;
+    padding: 26px 24px 20px;
+    width: 320px;
+    max-width: 90vw;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    animation: modalMasuk 0.35s var(--anim-ease-bounce) forwards;
+}
+
+@keyframes modalMasuk {
+    from {
+        opacity: 0;
+        transform: scale(0.85) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--clr-error);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    animation: iconPulse 0.6s var(--anim-ease-bounce) 0.1s both;
+}
+
+@keyframes iconPulse {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+.modal-title {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 6px;
+    color: #111827;
+}
+
+.modal-desc {
+    font-size: 13.5px;
+    color: #6b7280;
+    margin-bottom: 18px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.modal-actions button {
+    flex: 1;
+    padding: 9px 0;
+    border-radius: 9px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.15s var(--anim-ease), filter 0.15s ease;
+}
+
+.modal-actions button:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.07);
+}
+
+.modal-actions button:active {
+    transform: scale(0.96);
+}
+
+.modal-batal {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.modal-hapus {
+    background: var(--clr-error);
+    color: #fff;
+}
+
+/* ------------------------------------------------------
+   6. FORM — glow pulse saat masuk mode edit
+   ------------------------------------------------------ */
+@keyframes pulseEdit {
+    0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.45); }
+    70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+.form-mode-edit {
+    animation: pulseEdit 0.7s var(--anim-ease);
+    border-radius: 10px;
+}
+
+input.form-control:focus,
+textarea.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+    border-color: var(--clr-info);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}

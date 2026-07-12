@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard IAM</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #EEF3F8;
+            --panel: #FCFDFF;
+            --ink: #1C2B4A;
+            --ink-soft: #4A5C7F;
+            --line: #B9C6D9;
+            --line-soft: #D8E1EC;
+            --accent: #C98A1E;
+            --annotate: #B5502A;
+            --focus: #2F6FED;
+            --ok: #2E8B57;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                linear-gradient(var(--line-soft) 1px, transparent 1px),
+                linear-gradient(90deg, var(--line-soft) 1px, transparent 1px),
+                var(--paper);
+            background-size: 28px 28px, 28px 28px, auto;
+            font-family: "IBM Plex Sans", sans-serif;
+            color: var(--ink);
+            padding: 40px 20px;
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* ---- Kartu bergaya lembar gambar teknik ---- */
+
+        .sheet {
+            position: relative;
+            background: var(--panel);
+            border: 1px solid var(--ink);
+            padding: 34px 32px 0;
+            box-shadow: 6px 6px 0 rgba(28, 43, 74, 0.08);
+        }
+
+        .reg-mark {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            pointer-events: none;
+        }
+        .reg-mark::before,
+        .reg-mark::after {
+            content: "";
+            position: absolute;
+            background: var(--ink);
+        }
+        .reg-mark::before { width: 100%; height: 1px; top: 50%; left: 0; }
+        .reg-mark::after  { width: 1px; height: 100%; left: 50%; top: 0; }
+        .reg-mark.tl { top: -7px; left: -7px; }
+        .reg-mark.tr { top: -7px; right: -7px; }
+        .reg-mark.bl { bottom: -7px; left: -7px; }
+        .reg-mark.br { bottom: -7px; right: -7px; }
+
+        .eyebrow {
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .eyebrow .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--ok);
+            box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.18);
+        }
+
+        h1 {
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            margin: 0 0 4px;
+        }
+
+        .subtitle {
+            font-size: 13.5px;
+            color: var(--ink-soft);
+            margin: 0 0 28px;
+            line-height: 1.5;
+        }
+
+        /* ---- Data pengguna, gaya baris skematik ---- */
+
+        .datablock {
+            border-top: 1px solid var(--ink);
+        }
+
+        .datarow {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px dashed var(--line);
+        }
+
+        .datarow dt {
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            margin: 0;
+            padding-top: 2px;
+        }
+
+        .datarow dd {
+            margin: 0;
+            font-size: 15px;
+            color: var(--ink);
+            word-break: break-word;
+        }
+
+        .datarow dd:empty::before {
+            content: "—";
+            color: var(--line);
+        }
+
+        /* ---- Aksi ---- */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 26px 0 0;
+            padding: 22px 0;
+            border-top: 1px solid var(--line);
+        }
+
+        .btn-console {
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 12.5px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 12px 18px;
+            border: 1px solid var(--ink);
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease, transform 0.05s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-console:active { transform: translateY(1px); }
+
+        .btn-console:focus-visible {
+            outline: 2px solid var(--focus);
+            outline-offset: 3px;
+        }
+
+        .btn-primary {
+            background: var(--ink);
+            color: var(--paper);
+            border-color: var(--ink);
+        }
+        .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--annotate);
+            border-color: var(--annotate);
+            margin-left: auto;
+        }
+        .btn-ghost:hover { background: var(--annotate); color: var(--paper); }
+
+        .titleblock {
+            margin: 30px -32px 0;
+            border-top: 1px solid var(--ink);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 10px;
+            letter-spacing: 0.04em;
+            color: var(--ink-soft);
+        }
+
+        .titleblock div {
+            padding: 10px 14px;
+            border-right: 1px solid var(--line);
+        }
+        .titleblock div:last-child { border-right: none; }
+
+        .titleblock strong {
+            display: block;
+            color: var(--ink);
+            font-size: 11.5px;
+            margin-bottom: 2px;
+        }
+
+        @media (max-width: 480px) {
+            .sheet { padding: 28px 20px 0; }
+            .datarow { grid-template-columns: 1fr; gap: 4px; }
+            .titleblock { margin: 26px -20px 0; }
+            .btn-ghost { margin-left: 0; }
+        }
+    </style>
+        <link rel="stylesheet" href="css/style.css">
+
+</head>
+<body>
+
+<div class="wrap">
+
+    <div class="sheet">
+
+        <span class="reg-mark tl"></span>
+        <span class="reg-mark tr"></span>
+        <span class="reg-mark bl"></span>
+        <span class="reg-mark br"></span>
+
+        <div class="eyebrow"><span class="dot"></span> Sesi Aktif</div>
+
+        <h1>Dashboard IAM</h1>
+        <p class="subtitle">Ringkasan identitas dan akses untuk akun yang sedang masuk.</p>
+
+        <dl class="datablock">
+
+            <div class="datarow">
+                <dt>Nama</dt>
+                <dd id="nama"></dd>
+            </div>
+
+            <div class="datarow">
+                <dt>Email</dt>
+                <dd id="email"></dd>
+            </div>
+
+            <div class="datarow">
+                <dt>Role</dt>
+                <dd id="role"></dd>
+            </div>
+
+        </dl>
+
+        <div class="actions">
+
+            <a href="dokumen.html" class="btn-console btn-primary">
+                Kelola Dokumen
+            </a>
+
+            <button
+                class="btn-console btn-ghost"
+                id="logoutBtn">
+
+                Logout
+
+            </button>
+
+        </div>
+
+        <div class="titleblock">
+            <div><strong>Sistem</strong>IAM-TEST-ENV</div>
+            <div><strong>Backend</strong>Supabase Auth</div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/dist/umd/supabase.min.js"></script>
+
+<script src="js/config.js"></script>
+
+<script src="js/dashboard.js"></script>
+
+<script src="js/auth.js"></script>
+
+
+</body>
+</html>

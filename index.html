@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Analisis IAM</title>
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+
+    <!-- CSS proyek (tetap dipertahankan bila ada styling lain yang bergantung padanya) -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="wrap">
+
+    <div class="sheet">
+
+        <span class="reg-mark tl"></span>
+        <span class="reg-mark tr"></span>
+        <span class="reg-mark bl"></span>
+        <span class="reg-mark br"></span>
+
+        <div class="eyebrow"><span class="dot"></span> Identity &amp; Access Management</div>
+
+        <h1>Analisis Keamanan IAM</h1>
+        <p class="subtitle">Masuk untuk mengakses lingkungan pengujian kontrol akses.</p>
+
+        <form id="loginForm">
+
+            <div class="field">
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="nama@contoh.com"
+                    required>
+            </div>
+
+            <div class="field">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="••••••••"
+                    required>
+            </div>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <div class="titleblock">
+            <div><strong>Sistem</strong>IAM-TEST-ENV</div>
+            <div><strong>Backend</strong>Supabase Auth</div>
+            <div><strong>Status</strong>Menunggu Sesi</div>
+        </div>
+
+    </div>
+
+    <p class="note">Sistem Pengujian &middot; <strong>Bukan untuk data produksi</strong></p>
+
+</div>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.8/dist/umd/supabase.min.js"></script>
+<!-- Config -->
+<script src="js/config.js"></script>
+
+<!-- Login -->
+<script src="js/login.js"></script>
+
+</body>
+</html>
