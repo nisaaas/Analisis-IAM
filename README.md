@@ -26,6 +26,14 @@ menggunakan Supabase pada aplikasi web sederhana.
 - CSS
 - JavaScript
 - Supabase
+  
+## Cara Menjalankan
+1. Clone repository
+2. Buka index.html
+3. Hubungkan ke Supabase
+
+## Deployment
+https://iamdokumen.netlify.app
 
 ## Hasil Pengujian
 - Login berhasil
