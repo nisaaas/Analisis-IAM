@@ -1,0 +1,1 @@
+INSERT INTO "public"."profiles" ("id", "nama", "role") VALUES ('3d47f6c9-9d5b-476c-8cbc-2d1d8cb2b788', 'Fitri', 'user'), ('a9555447-ed1a-4f94-8665-56605b7d234d', 'Putra', 'pegawai'), ('b81afd1b-9616-4592-bcaf-d66584cc2e6d', 'Administrator', 'admin');
